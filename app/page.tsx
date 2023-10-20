@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Title is required!' }),
   name: z.string().min(1, { message: 'Name is required!' }),
-  email: z.string().min(1, { message: 'Email is required!' }),
+  email: z.string().email(),
 });
 
 export default function Home() {
@@ -39,6 +39,7 @@ export default function Home() {
     console.log(values);
     form.reset();
   }
+
   return (
     <div className="h-full w-full flex items-center justify-center">
       <Form {...form}>
@@ -80,6 +81,9 @@ export default function Home() {
                 variant={'outline'}
                 onClick={() => {
                   form.trigger(['title', 'name']);
+
+                  if (form.getValues(['title', 'name']).some((e) => e === ''))
+                    return;
                   setStep(1);
                 }}
               >
